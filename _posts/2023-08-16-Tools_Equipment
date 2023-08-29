@@ -1,4 +1,4 @@
----
+<!-- ---
 toc: true
 comments: true
 layout: post
@@ -90,4 +90,4 @@ $ python --version  # version of python3 should be shown
 (base) id:~$ jupyter kernelspec list # list installed kernels
 Available kernels:
   python3    /home/shay/.local/share/jupyter/kernels/python3
-```
+``` -->
