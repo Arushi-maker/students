@@ -1,3 +1,4 @@
+
 import getpass, sys
 
 def question_with_response(prompt):
@@ -12,22 +13,22 @@ print('Hello, ' + getpass.getuser() + " running " + sys.executable)
 print("You will be asked " + str(questions) + " questions.")
 print("Are you ready to take a test?")
 
-rsp = question_with_response("What command is used to include other functions that were previously developed?")
-if rsp == "import":
+rsp = question_with_response("What period # does Arushi have Comp Sci?")
+if rsp == "2":
     print(rsp + " is correct!")
     correct += 1
 else:
     print(rsp + " is incorrect!")
 
-rsp = question_with_response("What command is used to evaluate correct or incorrect response in this example?")
-if rsp == "if":
+rsp = question_with_response("What is Arushi's quote of the day?")
+if rsp == "This will all make perfect sense one day":
     print(rsp + " is correct!")
     correct += 1
 else:
     print(rsp + " is incorrect!")
 
-rsp = question_with_response("Each 'if' command contains an '_________' to determine a true or false condition?")
-if rsp == "expression":
+rsp = question_with_response("Is Arushi your friend?")
+if rsp == "yes":
     print(rsp + " is correct!")
     correct += 1
 else:

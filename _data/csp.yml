@@ -1,7 +1,7 @@
 # CSP course meta data
 Unit1:
-  title: Introduction to Tools and Resources
-  description: The initial weeks focus on introducing Tools, Pair Programming, and the AP Resources that we plan to use throughout the year. At the end of Weeks 0-3, students will be exposed to blogging with GitHub Pages; developing with Jupyter Notebooks, Python, JavaScript, HTML, and Code.org AppLab; working with AP classroom and becoming familiar with Create Performance Task project requirements.
+  title: Blog Creation w/ Chrissie
+  description: In Unit 1, I have learned a lot about basic HTML coding such as working with index.md and config.yml to create changes on my blog. I downloaded many tools such as Jupyter Notebook to read code on my brower and used GitHub to commit changes in my final code that I want to push out of the local server. Eventually, I started learning basic python skills as well as javascript and jquery to code games such as the snake game, calculator. I also looked through notebooks to further code new ideas and edit what I learned onto my posts in my blog.
   start: 0
   end: 3
 Unit2:
