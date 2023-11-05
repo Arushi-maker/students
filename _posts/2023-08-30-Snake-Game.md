@@ -4,7 +4,7 @@ title: Classic Snake Game
 layout: post
 comments: false
 description: A pretty advanced use of JavaScript building classic snake game using menu controls, key events, snake simulation and timers.  
-type: hacks
+type: tangibles
 courses: { csp: {week: 2}}
 ---
 

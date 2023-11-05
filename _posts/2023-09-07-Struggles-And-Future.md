@@ -2,7 +2,7 @@
 title: Struggles and Future
 toc: True
 description: Chrissie and I decided to create a place to list our troubles coding and how we solved them. We also list our future endeavors in our code.
-type: tangibles
+type: hacks
 courses: { csp: {week: 3}}
 ---
 <!-- Head contains information to Support the Document -->
