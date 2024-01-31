@@ -1,58 +1,88 @@
 ---
-layout: default
-title: Student Blog
+layout: login
+search_exclude: true
 ---
 <html lang="en">
 <head>
-    <style>
-        body {
-            background-color: #a2798f;
-        }
-        .header h1 {
-            opacity: 0; /* Start with zero opacity */
-            transform: translateY(-20px); /* Move the text up by 20px */
-            transition: opacity 1s, transform 3s;
-            animation: fadeInAndSlide 5s forwards infinite; /* Apply animation */
-        }
-        @keyframes fadeInAndSlide {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="your_stylesheet.css">
+  <title>Login Page</title>
 </head>
 <body>
-    <div class="header">
-        <h1>Welcome to Arushi's Blog!</h1>
+  <div class="container" style="text-align: center;">
+    <h1>Welcome to Arushi's Blog</h1>
+    <input id="usernameInput" type="text" class="input-text" placeholder="Username">
+    <input id="passwordInput" type="password" class="input-text" placeholder="Password">
+    <button id="loginButton" class="button" onclick="loginUser()">Login</button>
+    <button id="registerButton" class="button register-button" onclick="showRegistrationForm()">Register New User</button>
+    <!-- Registration Form (Hidden by default) -->
+    <div id="registrationForm" style="display: none;">
+      <h2>Register New User</h2>
+      <input id="newUsernameInput" type="text" class="input-text" placeholder="New Username">
+      <input id="newPasswordInput" type="password" class="input-text" placeholder="New Password">
+      <button id="registerNewUserButton" class="button" onclick="registerUser()">Register</button>
     </div>
+  </div>
+  <script>
+    function showRegistrationForm() {
+      document.getElementById("registrationForm").style.display = "block";
+    }
+    function registerUser() {
+      const newUsername = document.getElementById("newUsernameInput").value;
+      const newPassword = document.getElementById("newPasswordInput").value;
+      // Make a POST request to register a new user
+      fetch('http://127.0.0.1:5000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: newUsername,
+          password: newPassword,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('User registration successful:', data);
+        // Optionally, you can show a success message or redirect the user
+      })
+      .catch(error => {
+        console.error('Error registering user:', error);
+        // Handle error, show error message, etc.
+      });
+    }
+    function loginUser() {
+      const username = document.getElementById("usernameInput").value;
+      const password = document.getElementById("passwordInput").value;
+      // Make a POST request to check login credentials
+      fetch('http://127.0.0.1:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Login successful');
+          // Optionally, you can redirect the user to another link
+          window.location.href = 'https://arushi-maker.github.io/Nighthawk-Pages/_posts/2024-01-30-newhomepage.md/';
+        } else {
+          console.log('Login failed');
+          // Optionally, you can show an error message
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle error, show error message, etc.
+      });
+    }
+  </script>
 </body>
 </html>
-
-    
-               
-    Hi, my name is Arushi Pandey. 
-    I am 15 years old and I am currently 
-    a sophmore at Del Norte High School in 
-    San Diego, California. I am an 
-    Asian-American female and 
-    want to pursue into the world of 
-    innovation and engineering. 
-    Here is my personal blog!
-                 
-    Throughout this trimester, 
-    I displayed some concepts I have learned 
-    on my blog through the integration of 
-    HTML, CSS, and Javascript. 
-    Additionally, this home page displays a 
-    variety of skills including adding the 
-    colors, fonts, images, gifs, and even animations.
-
-
-![gif](welcomegif.gif)
 
 
