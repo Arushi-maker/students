@@ -38,7 +38,7 @@ search_exclude: true
       const newPassword = document.getElementById("newPasswordInput").value;
 
       // Make a POST request to register a new user
-      fetch('http://127.0.0.1:5000/users', {
+      fetch('http://127.0.0.1:5000/users/login.py', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ search_exclude: true
       })
       .catch(error => {
         console.error('Error registering user:', error);
-        alert('Registration failed. Please try again.');
+        alert('Registration failed. HAHAHAHA try again.');
         // Handle error, show error message, etc.
       });
     }
@@ -66,7 +66,7 @@ search_exclude: true
       const password = document.getElementById("passwordInput").value;
 
       // Make a POST request to check login credentials
-      fetch('http://127.0.0.1:5000/login', {
+      fetch('http://127.0.0.1:5000/login.py', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ search_exclude: true
           console.log('Login successful');
           alert('Login succesful, redirecting you to the main page');
           // Optionally, you can redirect the user to another link
-          window.location.href = 'https://deeskili.github.io/mainpage/AD_compsci.html';
+          window.location.href = 'https://arushi-maker.github.io/notebooks/newhomepage.md';
         } else {
           console.log('Login failed');
           alert('Login failed, please check you credentials');
