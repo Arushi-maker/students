@@ -1,16 +1,11 @@
----
-layout: default
-search_exclude: true
----
-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: " en" }}">
  
 <html lang="en">
 <head>
   <style>
     form {
-      background-color:aqua ;
+      background-color: #d3709b;
     }
     </style>
 </head>
@@ -30,7 +25,7 @@ search_exclude: true
     <button id="registerButton" class="button register-button" onclick="showRegistrationForm()">Register New User</button>
 
    
-  <div id="registrationForm" style="display: none;">
+    <div id="registrationForm" style="display: none;">
       <h2>Register New User</h2>
       <input id="newUsernameInput" type="text" class="input-text" placeholder="New Username">
       <input id="newPasswordInput" type="password" class="input-text" placeholder="New Password">
@@ -43,10 +38,12 @@ search_exclude: true
         function showRegistrationForm() {
       document.getElementById("registrationForm").style.display = "block";
     }
-      function registerUser() {
+
+    function registerUser() {
       const newUsername = document.getElementById("newUsernameInput").value;
       const newPassword = document.getElementById("newPasswordInput").value;
-    // Make a POST request to register a new user
+
+      // Make a POST request to register a new user
       fetch('http://127.0.0.1:8086/api/users/authenticate', {
         method: 'POST',
         headers: {
@@ -70,11 +67,14 @@ search_exclude: true
       });
     }
         const apiUrl = "http://127.0.0.1:8086/api/users/authenticate";
-          document.getElementById("authenticate").onsubmit = async function (e) {
+
+        document.getElementById("authenticate").onsubmit = async function (e) {
           e.preventDefault();
           const uid = document.getElementById("uid").value;
           const password = document.getElementById("password").value;
+
           const obj = { uid: uid, password: password };
+
           try {
             const response = await fetch(apiUrl, {
               method: "POST",
@@ -84,33 +84,43 @@ search_exclude: true
               body: JSON.stringify(obj)
             });
             var myHeaders = new Headers();
+          
             myHeaders.append("Content-Type", "application/json");
+
               var raw = JSON.stringify({
                 "uid": "toby",
                 "password": "123toby"
               });
+
               var requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
                 body: raw,
                 redirect: 'follow'
               };
+
               fetch("http://127.0.0.1:8086/api/users/authenticate", requestOptions)
                 .then(response => response.text())
                 .then(result => console.log(result))
                 .catch(error => console.log('error', error));
+
             if (!response.ok) {
               throw new Error('Authentication was not successful');
             }
+
             const token = await response.text();
+
             if (token) {
               // Authentication was successful, you can handle the token as needed
               console.log('Authentication successful');
               document.cookie = `token=${token}; path=/`;
+
               localStorage.setItem("token", token);
               localStorage.setItem("flagData", 1);
+
               window.location.href = "./";
               window.location.replace("./");
+
             } else {
               // Authentication failed, show an error message or take appropriate action
               console.error('Authentication failed');
@@ -125,5 +135,3 @@ search_exclude: true
 </body>
 
 </html> 
-
-
