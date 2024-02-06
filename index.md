@@ -2,8 +2,7 @@
 layout: default
 search_exclude: true
 ---
-
-<!DOCTYPE html>
+-----------------------------------------------------------------------------------------------
 <html lang="{{ page.lang | default: site.lang | default: " en" }}">
  
 <html lang="en">
