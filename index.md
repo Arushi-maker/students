@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: woah
 search_exclude: true
 ---
 -----------------------------------------------------------------------------------------------
@@ -46,6 +46,78 @@ search_exclude: true
       const newUsername = document.getElementById("newUsernameInput").value;
       const newPassword = document.getElementById("newPasswordInput").value;
     // Make a POST request to register a new user
+    function loginUser(){
+        fetch('http://127.0.0.1:8086/api/users/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: newUsername,
+          password: newPassword,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('User registration successful:', data);
+        alert('Registration successful!');
+        // Optionally, you can show a success message or redirect the user
+      })
+      .catch(error => {
+        console.error('Error registering user:', error);
+        alert('Registration failed. Please try again.');
+        // Handle error, show error message, etc.
+      });
+    }
+        const apiUrl = "http://127.0.0.1:8086/api/users/authenticate";
+          document.getElementById("authenticate").onsubmit = async function (e) {
+          e.preventDefault();
+          const uid = document.getElementById("uid").value;
+          const password = document.getElementById("password").value;
+          const obj = { uid: uid, password: password };
+          try {
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(obj)
+            });
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+              var raw = JSON.stringify({
+                "uid": "toby",
+                "password": "123toby"
+              });
+              var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+              };
+              fetch("http://127.0.0.1:8086/api/users/authenticate", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+            if (!response.ok) {
+              throw new Error('Authentication was not successful');
+            }
+            const token = await response.text();
+            if (token) {
+              // Authentication was successful, you can handle the token as needed
+              console.log('Authentication successful');
+              document.cookie = `token=${token}; path=/`;
+              localStorage.setItem("token", token);
+              localStorage.setItem("flagData", 1);
+              window.location.href = "./";
+              window.location.replace("./");
+            } else {
+              // Authentication failed, show an error message or take appropriate action
+              console.error('Authentication failed');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+    };
       fetch('http://127.0.0.1:8086/api/users/authenticate', {
         method: 'POST',
         headers: {

@@ -1,49 +1,60 @@
-<!-- !-- <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: " en" }}">
+<!DOCTYPE html>
+<form action="javascript:login_user()">
+  <p><label>
+      User ID:
+      <input type="text" name="uid" id="uid" required>
+  </label></p>
+  <p><label>
+      Password:
+      <input type="password" name="password" id="password" required>
+  </label></p>
+  <p>
+      <button>Login</button>
+  </p>
+</form>
 
-<head>
-  <style>
-    form {
-      background-color: #d3709b;
-      box-shadow: 0 0 10px rgba(113, 104, 104, 0.1);
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-      margin-top: 20px;
-    }
+<script type="module">
+  // uri variable and options object are obtained from config.js
+  import { uri, options } from '{http://127.0.0.1:8086/flask_portfolio/users.py';
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #326b78;
-    }
+  function login_user(){
+      // Set Authenticate endpoint
+      const url = uri + 'http://127.0.0.1:8086/api/users/authenticate';
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 16px;
-    }
+      // Set the body of the request to include login data from the DOM
+      const body = {
+          uid: document.getElementById("uid").value,
+          password: document.getElementById("password").value,
+      };
 
-    input[type="submit"] {
-      background-color: #4caf50;
-      color: #fff;
-      cursor: pointer;
-    }
+      // Change options according to Authentication requirements
+      const authOptions = {
+          ...options, // This will copy all properties from options
+          method: 'POST', // Override the method property
+          cache: 'no-cache', // Set the cache property
+          body: JSON.stringify(body)
+      };
 
-    input[type="submit"]:hover {
-      background-color: #45a049;
-    }
+      // Fetch JWT
+      fetch(url, authOptions)
+      .then(response => {
+          // handle error response from Web API
+          if (!response.ok) {
+              const errorMsg = 'Login error: ' + response.status;
+              console.log(errorMsg);
+              return;
+          }
+          // Success!!!
+          // Redirect to the database page
+          window.location.href = "{http://127.0.0.1:4200/student/data/database";
+      })
+      // catch fetch errors (ie ACCESS to server blocked)
+      .catch(err => {
+          console.error(err);
+      });
+  }
 
-    .error-message {
-      color: #ff0000;
-      margin-top: 10px;
-    }
-  </style>
-</head>
+  // Attach login_user to the window object, allowing access to form action
+  window.login_user = login_user;
+</script>
+</html>
