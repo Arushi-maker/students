@@ -13,8 +13,8 @@ search_exclude: true
     <style>
         body {
             margin: 0;
-            padding: 20px;
-            background-color: #add8e6;
+            padding: 20;
+            background-color: #add8e6; /* Light blue background */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,10 +22,10 @@ search_exclude: true
             position: relative;
         }
 
-        .card {
+        .card, .bother-list{
             border: 2px solid #ccc;
             border-radius: 5px;
-            padding: 20px;
+            padding: 50px;
             margin-bottom: 20px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -58,17 +58,16 @@ search_exclude: true
         #zen-garden {
             width: 600px;
             height: 400px;
-            background-color: #010101;
-            border: 10px solid #8b4513;
+            background-color: #010101; /* Mind Color */
+            border: 10px solid #8b4513; /* Brown border */
             position: relative;
-            margin-bottom: 20px;
         }
 
-        .tools {
+        .tools, .bother-list {
             position: absolute;
             top: 20px;
-            right: 20px;
-            display: none;
+            left: 20px;
+            display: none; /* Hidden initially */
         }
 
         button {
@@ -88,7 +87,7 @@ search_exclude: true
         .emotion {
             width: 30px;
             height: 30px;
-            background-color: rgb(255, 255, 255);
+            background-color: rgb(255, 255, 255); /* Default color */
             border-radius: 50%;
             position: absolute;
         }
@@ -96,45 +95,43 @@ search_exclude: true
         #title {
             text-align: center;
             color: white;
-            font-size: 36px;
-            margin-bottom: 10px;
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
+            font-size: 36px; /* Adjust the font size */
+            margin-bottom: 10px; /* Adjust the margin */
+            position: absolute; /* Change position to absolute */
+            top: 50px; /* Adjust top position */
+            left: 50%; /* Move to the center */
+            transform: translateX(-50%); /* Center horizontally */
+            display: none; /* Hidden initially */
         }
 
         #emotion-count {
-            text-align: center;
+            position: absolute;
+            top: 20px;
+            right: 20px;
             color: black;
             font-size: 18px;
-            margin-bottom: 20px;
-            display: none;
+            display: none; /* Hidden initially */
         }
         
         #selection-choice {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
-            display: none;
+            width: 200px;
+            display: none; /* Hidden initially */
         }
-
-        #restart-btn {
+        #emotion-selection {
             margin-top: 20px;
-            display: none;
-        }
-
-        input[type="radio"] {
-            transform: scale(0.8);
-        }
-
-        label {
-            margin-right: 10px;
         }
     </style>
 </head>
 <body>
     <div class="card" id="name-input">
         <h2>Enter Your Name</h2>
+
+
         <input type="text" id="username" placeholder="Your name">
         <button onclick="startGame()">Start Game</button>
     </div>
@@ -142,26 +139,32 @@ search_exclude: true
     <div id="title">Stress Reliever Game</div>
 
     <div class="tools">
-        <button onclick="clearSquare()" id="relieve-stress">Relieve Stress</button>
-        <button onclick="changeEmotionColor()" id="change-emotions">Change Emotions</button>
+        <button onclick="clearSquare()">Relieve Stress</button>
+        <button onclick="changeEmotionColor()">Change Emotions</button>
     </div>
 
-    <div id="zen-garden" style="display: none;" onclick="addEmotion(event)"></div>
+    <div class="container" id="game-container" style="display: none;">
+        <div class="bother-list">
+            <h3>What's Bothering You?</h3>
+            <input type="text" id="bother-input" placeholder="Write here">
+            <ul id="bother-list"></ul>
+        </div>
+    </div>
 
-    <div id="emotion-count" style="display: none;">Emotions: 0</div>
+    <div id="zen-garden" style="display: none;" onclick="addEmotion(event)">
+    </div>
+
+    <div id="emotion-count" style="display: none;"></div>
+
+    <div id="player-info" style="display: none;"></div>
+    
+    <div id="selection-choice" style="display: none;">
 
     <div id="selection-choice" style="display: none;">
-        <div class="card">
-            <div id="emotion-selection">
-                <h3>Select Emotion Color</h3>
-                <input type="radio" name="emotion-color" id="red" value="red" onclick="setEmotionColor(this.value)">
-                <label for="red">Red</label>
-                <input type="radio" name="emotion-color" id="blue" value="blue" onclick="setEmotionColor(this.value)">
-                <label for="blue">Blue</label>
-            </div>
-        </div>
-        <button id="restart-btn" onclick="restartGame()">Restart</button>
-    </div>
+
+    </div>  
+        <button onclick="restartGame()">Restart</button>
+</div>
 
     <script>
         let playerData = [];
@@ -176,11 +179,27 @@ search_exclude: true
                 document.getElementById('zen-garden').style.display = 'block';
                 document.getElementById('emotion-count').style.display = 'block';
                 document.getElementById('selection-choice').style.display = 'block';
-                document.getElementById('restart-btn').style.display = 'inline-block';
-                document.getElementById('relieve-stress').style.display = 'inline-block'; /* Display relieve stress button */
-                document.getElementById('change-emotions').style.display = 'inline-block'; /* Display change emotions button */
+                document.querySelector('.bother-list').style.display = 'block';
                 updatePlayerData(username, 0);
             }
+
+            function addBother() {
+            const botherInput = document.getElementById('bother-input');
+            const bother = botherInput.value.trim();
+            if (bother) {
+                const listItem = document.createElement('li');
+                listItem.textContent = bother;
+                document.getElementById('bother-list').appendChild(listItem);
+                botherInput.value = ''; // Clear the input field
+            }
+        }
+
+        document.getElementById('bother-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                addBother();
+            }
+        });
+        
         }
 
         function restartGame() {
@@ -257,14 +276,6 @@ search_exclude: true
         function updateEmotionCount() {
             const countElement = document.getElementById('emotion-count');
             countElement.textContent = "Emotions: " + emotionCount;
-        }
-
-        function setEmotionColor(color) {
-            // Set emotion color based on selection
-            const emotions = document.querySelectorAll('.emotion');
-            emotions.forEach(emotion => {
-                emotion.style.backgroundColor = color;
-            });
         }
     </script>
 </body>

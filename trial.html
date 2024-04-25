@@ -13,46 +13,30 @@ search_exclude: true
     <style>
         body {
             margin: 0;
-            padding: 20;
+            padding: 20px;
             background-color: #add8e6; /* Light blue background */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             position: relative;
+            flex-direction: column;
         }
 
-        .card {
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            padding: 50px;
-            margin-bottom: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: start;
             width: 100%;
         }
 
-        #name-input input[type="text"] {
-            width: calc(100% - 80px);
-            padding: 10px;
-            border: 1px solid #ccc;
+        .card, .bother-list {
+            border: 2px solid #ccc;
             border-radius: 5px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-
-        #name-input button {
-            padding: 5px 20px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #name-input button:hover {
-            background-color: #45a049;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
         }
 
         #zen-garden {
@@ -63,108 +47,51 @@ search_exclude: true
             position: relative;
         }
 
-        .tools {
-            position: absolute;
-            top: 20px;
-            left: 20px;
+        .tools, .bother-list {
             display: none; /* Hidden initially */
         }
 
+        input[type="text"], button {
+            padding: 10px;
+            margin: 5px 0;
+            width: calc(100% - 24px);
+        }
+
         button {
-            padding: 10px 20px;
             background-color: #4caf50;
             color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            margin-right: 10px;
         }
 
         button:hover {
             background-color: #45a049;
-        }
-
-        /* Emotion style */
-        .emotion {
-            width: 30px;
-            height: 30px;
-            background-color: rgb(255, 255, 255); /* Default color */
-            border-radius: 50%;
-            position: absolute;
-        }
-
-        #title {
-            text-align: center;
-            color: white;
-            font-size: 36px; /* Adjust the font size */
-            margin-bottom: 10px; /* Adjust the margin */
-            position: absolute; /* Change position to absolute */
-            top: 50px; /* Adjust top position */
-            left: 50%; /* Move to the center */
-            transform: translateX(-50%); /* Center horizontally */
-            display: none; /* Hidden initially */
-        }
-
-        #emotion-count {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: black;
-            font-size: 18px;
-            display: none; /* Hidden initially */
-        }
-        
-        #selection-choice {
-            position: absolute;
-            top: 80%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            width: 200px;
-            display: none; /* Hidden initially */
-        }
-        #emotion-selection {
-            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="card" id="name-input">
         <h2>Enter Your Name</h2>
-
-
         <input type="text" id="username" placeholder="Your name">
         <button onclick="startGame()">Start Game</button>
     </div>
 
-    <div id="title">Stress Reliever Game</div>
+    <div class="container" id="game-container" style="display: none;">
+        <div class="bother-list">
+            <h3>What's Bothering You?</h3>
+            <input type="text" id="bother-input" placeholder="Write here">
+            <ul id="bother-list"></ul>
+        </div>
+        <div id="zen-garden" onclick="addEmotion(event)"></div>
+    </div>
 
     <div class="tools">
         <button onclick="clearSquare()">Relieve Stress</button>
         <button onclick="changeEmotionColor()">Change Emotions</button>
     </div>
 
-    <div id="zen-garden" style="display: none;" onclick="addEmotion(event)">
-    </div>
-
     <div id="emotion-count" style="display: none;"></div>
-
-    <div id="player-info" style="display: none;"></div>
-    
-    <div id="selection-choice" style="display: none;">
-
-    <div id="selection-choice" style="display: none;">
-        <div class="card">
-            <div id="emotion-selection">
-                <h3>Select Emotion Color</h3>
-                <input type="radio" name="emotion-color" id="red" value="red" onclick="setEmotionColor(this.value)">
-                <label for="red">Red</label>
-                <input type="radio" name="emotion-color" id="blue" value="blue" onclick="setEmotionColor(this.value)">
-                <label for="blue">Blue</label>
-            </div>
-        </div>
-    </div>  
-        <button onclick="restartGame()">Restart</button>
-</div>
 
     <script>
         let playerData = [];
@@ -173,19 +100,29 @@ search_exclude: true
             const username = document.getElementById('username').value;
             if (username) {
                 document.getElementById('name-input').style.display = 'none';
-                document.getElementById('title').textContent = username + "'s Stress Reliever Game";
-                document.getElementById('title').style.display = 'block';
+                document.getElementById('game-container').style.display = 'flex';
                 document.querySelector('.tools').style.display = 'block';
-                document.getElementById('zen-garden').style.display = 'block';
-                document.getElementById('emotion-count').style.display = 'block';
-                document.getElementById('selection-choice').style.display = 'block';
+                document.querySelector('.bother-list').style.display = 'block';
                 updatePlayerData(username, 0);
             }
         }
 
-        function restartGame() {
-            window.location.reload();
+        function addBother() {
+            const botherInput = document.getElementById('bother-input');
+            const bother = botherInput.value.trim();
+            if (bother) {
+                const listItem = document.createElement('li');
+                listItem.textContent = bother;
+                document.getElementById('bother-list').appendChild(listItem);
+                botherInput.value = ''; // Clear the input field
+            }
         }
+
+        document.getElementById('bother-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                addBother();
+            }
+        });
 
         function updatePlayerData(username, emotionCount) {
             const playerIndex = playerData.findIndex(player => player.username === username);
@@ -194,17 +131,6 @@ search_exclude: true
             } else {
                 playerData.push({ username, emotionCount });
             }
-            renderPlayerInfo();
-        }
-
-        function renderPlayerInfo() {
-            const playerInfoElement = document.getElementById('player-info');
-            playerInfoElement.innerHTML = '';
-            playerData.forEach(player => {
-                const playerDiv = document.createElement('div');
-                playerDiv.textContent = player.username + ' - Emotions: ' + player.emotionCount;
-                playerInfoElement.appendChild(playerDiv);
-            });
         }
 
         let emotionCount = 0;
@@ -225,7 +151,6 @@ search_exclude: true
         }
 
         function clearSquare() {
-            // Remove all emotions
             const zenGarden = document.getElementById('zen-garden');
             while (zenGarden.firstChild) {
                 zenGarden.removeChild(zenGarden.firstChild);
@@ -237,7 +162,6 @@ search_exclude: true
         }
 
         function changeEmotionColor() {
-            // Change the color of all emotions
             const emotions = document.querySelectorAll('.emotion');
             emotions.forEach(emotion => {
                 emotion.style.backgroundColor = getRandomColor();
@@ -245,7 +169,6 @@ search_exclude: true
         }
 
         function getRandomColor() {
-            // Generate a random color
             const letters = '0123456789ABCDEF';
             let color = '#';
             for (let i = 0; i < 6; i++) {
