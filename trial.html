@@ -13,30 +13,46 @@ search_exclude: true
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 20;
             background-color: #add8e6; /* Light blue background */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             position: relative;
-            flex-direction: column;
         }
 
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: start;
+        .card {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 50px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
             width: 100%;
         }
 
-        .card, .bother-list {
-            border: 2px solid #ccc;
+        #name-input input[type="text"] {
+            width: calc(100% - 80px);
+            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        #name-input button {
+            padding: 5px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #name-input button:hover {
+            background-color: #45a049;
         }
 
         #zen-garden {
@@ -47,26 +63,83 @@ search_exclude: true
             position: relative;
         }
 
-        .tools, .bother-list {
+        .tools {
+            position: absolute;
+            top: 20px;
+            left: 20px;
             display: none; /* Hidden initially */
         }
 
-        input[type="text"], button {
-            padding: 10px;
-            margin: 5px 0;
-            width: calc(100% - 24px);
-        }
-
         button {
+            padding: 10px 20px;
             background-color: #4caf50;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
+            margin-right: 10px;
         }
 
         button:hover {
             background-color: #45a049;
+        }
+
+        .emotion {
+            width: 30px;
+            height: 30px;
+            background-color:  red; /* Default color */
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        #title {
+            text-align: center;
+            color: white;
+            font-size: 36px; /* Adjust the font size */
+            margin-bottom: 10px; /* Adjust the margin */
+            position: absolute; /* Change position to absolute */
+            top: 50px; /* Adjust top position */
+            left: 50%; /* Move to the center */
+            transform: translateX(-50%); /* Center horizontally */
+            display: none; /* Hidden initially */
+        }
+
+        #emotion-count {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: black;
+            font-size: 18px;
+            display: none; /* Hidden initially */
+        }
+
+        #selection-choice {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 200px;
+            display: none; /* Hidden initially */
+        }
+
+        #emotion-selection {
+            margin-top: 20px;
+        }
+
+        .radio-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .radio-container label {
+            color: #4caf50;
+            cursor: pointer;
+        }
+
+        .radio-container input[type="radio"] {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -77,52 +150,50 @@ search_exclude: true
         <button onclick="startGame()">Start Game</button>
     </div>
 
-    <div class="container" id="game-container" style="display: none;">
-        <div class="bother-list">
-            <h3>What's Bothering You?</h3>
-            <input type="text" id="bother-input" placeholder="Write here">
-            <ul id="bother-list"></ul>
-        </div>
-        <div id="zen-garden" onclick="addEmotion(event)"></div>
-    </div>
+    <div id="title">Stress Reliever Game</div>
 
     <div class="tools">
         <button onclick="clearSquare()">Relieve Stress</button>
         <button onclick="changeEmotionColor()">Change Emotions</button>
     </div>
 
+    <div id="zen-garden" style="display: none;" onclick="addEmotion(event)">
+    </div>
+
     <div id="emotion-count" style="display: none;"></div>
+    <div id="player-info" style="display: none;"></div>
+
+    <div id="selection-choice" style="display: none;">
+        <button onclick="restartGame()">Restart</button>
+        <div class="radio-container">
+            <input type="radio" id="red" name="emotionColor" value="red" onchange="setEmotionColor('red')" checked>
+            <label for="red">Red</label> 
+            <input type="radio" id="blue" name="emotionColor" value="blue" onchange="setEmotionColor('blue')">
+            <label for="blue">Blue</label>
+        </div>
+    </div>  
 
     <script>
         let playerData = [];
+        let colorCounts = {};
 
         function startGame() {
             const username = document.getElementById('username').value;
             if (username) {
                 document.getElementById('name-input').style.display = 'none';
-                document.getElementById('game-container').style.display = 'flex';
+                document.getElementById('title').textContent = username + "'s Stress Reliever Game";
+                document.getElementById('title').style.display = 'block';
                 document.querySelector('.tools').style.display = 'block';
-                document.querySelector('.bother-list').style.display = 'block';
+                document.getElementById('zen-garden').style.display = 'block';
+                document.getElementById('emotion-count').style.display = 'block';
+                document.getElementById('selection-choice').style.display = 'block';
                 updatePlayerData(username, 0);
             }
         }
 
-        function addBother() {
-            const botherInput = document.getElementById('bother-input');
-            const bother = botherInput.value.trim();
-            if (bother) {
-                const listItem = document.createElement('li');
-                listItem.textContent = bother;
-                document.getElementById('bother-list').appendChild(listItem);
-                botherInput.value = ''; // Clear the input field
-            }
+        function restartGame() {
+            window.location.reload();
         }
-
-        document.getElementById('bother-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                addBother();
-            }
-        });
 
         function updatePlayerData(username, emotionCount) {
             const playerIndex = playerData.findIndex(player => player.username === username);
@@ -131,12 +202,20 @@ search_exclude: true
             } else {
                 playerData.push({ username, emotionCount });
             }
+            renderPlayerInfo();
         }
 
-        let emotionCount = 0;
+        function renderPlayerInfo() {
+            const playerInfoElement = document.getElementById('player-info');
+            playerInfoElement.innerHTML = '';
+            playerData.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.textContent = player.username + ' - Emotions: ' + player.emotionCount;
+                playerInfoElement.appendChild(playerDiv);
+            });
+        }
 
         function addEmotion(event) {
-            // If clicked inside the zen garden
             if (event && event.target.id === "zen-garden") {
                 const emotion = document.createElement('div');
                 emotion.className = 'emotion';
@@ -168,6 +247,13 @@ search_exclude: true
             });
         }
 
+        function setEmotionColor(color) {
+            const emotions = document.querySelectorAll('.emotion');
+            emotions.forEach(emotion => {
+                emotion.style.backgroundColor = color;
+            });
+        }
+
         function getRandomColor() {
             const letters = '0123456789ABCDEF';
             let color = '#';
@@ -177,10 +263,45 @@ search_exclude: true
             return color;
         }
 
-        function updateEmotionCount() {
-            const countElement = document.getElementById('emotion-count');
-            countElement.textContent = "Emotions: " + emotionCount;
-        }
+        document.getElementById('red').addEventListener('change', function() {
+    if (this.checked) {
+        setAllEmotionsColor('red');
+    }
+});
+
+document.getElementById('blue').addEventListener('change', function() {
+    if (this.checked) {
+        setAllEmotionsColor('blue');
+    }
+});
+
+function setAllEmotionsColor(color) {
+    const emotions = document.querySelectorAll('.emotion');
+    emotions.forEach(emotion => {
+        emotion.style.backgroundColor = color;
+        updateColorCount(color); // Update color counts for each emotion changed
+    });
+    updateEmotionCount(); // Update the displayed count
+}
+
+function updateColorCount(color) {
+    if (colorCounts[color]) {
+        colorCounts[color]++;
+    } else {
+        colorCounts[color] = 1;
+    }
+    console.log("Current color counts:", colorCounts); // Optional: For debugging purposes
+}
+
+
+function updateEmotionCount() {
+    const countElement = document.getElementById('emotion-count');
+    const colorRed = document.getElementById('red').checked ? colorCounts['red'] || 0 : 0;
+    const colorBlue = document.getElementById('blue').checked ? colorCounts['blue'] || 0 : 0;
+    
+    countElement.textContent = "Red Emotions: " + colorRed + ", Blue Emotions: " + colorBlue;
+}
+
     </script>
 </body>
 </html>

@@ -22,7 +22,7 @@ search_exclude: true
             position: relative;
         }
 
-        .card, .bother-list{
+        .card {
             border: 2px solid #ccc;
             border-radius: 5px;
             padding: 50px;
@@ -63,7 +63,7 @@ search_exclude: true
             position: relative;
         }
 
-        .tools, .bother-list {
+        .tools {
             position: absolute;
             top: 20px;
             left: 20px;
@@ -143,14 +143,6 @@ search_exclude: true
         <button onclick="changeEmotionColor()">Change Emotions</button>
     </div>
 
-    <div class="container" id="game-container" style="display: none;">
-        <div class="bother-list">
-            <h3>What's Bothering You?</h3>
-            <input type="text" id="bother-input" placeholder="Write here">
-            <ul id="bother-list"></ul>
-        </div>
-    </div>
-
     <div id="zen-garden" style="display: none;" onclick="addEmotion(event)">
     </div>
 
@@ -179,27 +171,8 @@ search_exclude: true
                 document.getElementById('zen-garden').style.display = 'block';
                 document.getElementById('emotion-count').style.display = 'block';
                 document.getElementById('selection-choice').style.display = 'block';
-                document.querySelector('.bother-list').style.display = 'block';
                 updatePlayerData(username, 0);
             }
-
-            function addBother() {
-            const botherInput = document.getElementById('bother-input');
-            const bother = botherInput.value.trim();
-            if (bother) {
-                const listItem = document.createElement('li');
-                listItem.textContent = bother;
-                document.getElementById('bother-list').appendChild(listItem);
-                botherInput.value = ''; // Clear the input field
-            }
-        }
-
-        document.getElementById('bother-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                addBother();
-            }
-        });
-        
         }
 
         function restartGame() {
