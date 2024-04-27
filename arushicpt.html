@@ -14,7 +14,7 @@ search_exclude: true
         body {
             margin: 0;
             padding: 20;
-            background-color: #add8e6; /* Light blue background */
+            background-color: #add8e6; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -58,8 +58,8 @@ search_exclude: true
         #zen-garden {
             width: 600px;
             height: 400px;
-            background-color: #010101; /* Mind Color */
-            border: 10px solid #8b4513; /* Brown border */
+            background-color: #010101; 
+            border: 10px solid #8b4513; 
             position: relative;
         }
 
@@ -67,7 +67,7 @@ search_exclude: true
             position: absolute;
             top: 20px;
             left: 20px;
-            display: none; /* Hidden initially */
+            display: none; 
         }
 
         button {
@@ -83,11 +83,10 @@ search_exclude: true
             background-color: #45a049;
         }
 
-        /* Emotion style */
         .emotion {
             width: 30px;
             height: 30px;
-            background-color: rgb(255, 255, 255); /* Default color */
+            background-color: rgb(255, 255, 255); 
             border-radius: 50%;
             position: absolute;
         }
@@ -95,13 +94,13 @@ search_exclude: true
         #title {
             text-align: center;
             color: white;
-            font-size: 36px; /* Adjust the font size */
-            margin-bottom: 10px; /* Adjust the margin */
-            position: absolute; /* Change position to absolute */
-            top: 50px; /* Adjust top position */
-            left: 50%; /* Move to the center */
-            transform: translateX(-50%); /* Center horizontally */
-            display: none; /* Hidden initially */
+            font-size: 36px; 
+            margin-bottom: 10px; 
+            position: absolute; 
+            top: 50px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            display: none; 
         }
 
         #emotion-count {
@@ -110,7 +109,7 @@ search_exclude: true
             right: 20px;
             color: black;
             font-size: 18px;
-            display: none; /* Hidden initially */
+            display: none; 
         }
         
         #selection-choice {
@@ -120,136 +119,106 @@ search_exclude: true
             transform: translateX(-50%);
             text-align: center;
             width: 200px;
-            display: none; /* Hidden initially */
-        }
-        #emotion-selection {
-            margin-top: 20px;
+            display: none; 
         }
     </style>
 </head>
 <body>
     <div class="card" id="name-input">
         <h2>Enter Your Name</h2>
-
-
         <input type="text" id="username" placeholder="Your name">
         <button onclick="startGame()">Start Game</button>
     </div>
-
     <div id="title">Stress Reliever Game</div>
-
     <div class="tools">
         <button onclick="clearSquare()">Relieve Stress</button>
-        <button onclick="changeEmotionColor()">Change Emotions</button>
+        <button onclick="changeEmotionLocation()">Mix Up Emotions</button>
     </div>
-
-    <div id="zen-garden" style="display: none;" onclick="addEmotion(event)">
-    </div>
-
+    <div id="zen-garden" style="display: none;" onclick="addEmotion(event)"></div>
     <div id="emotion-count" style="display: none;"></div>
-
     <div id="player-info" style="display: none;"></div>
-    
     <div id="selection-choice" style="display: none;">
-
     <div id="selection-choice" style="display: none;">
-
     </div>  
         <button onclick="restartGame()">Restart</button>
 </div>
+<script>
+    let emotionCount = { red: 0, blue: 0, green: 0 };
 
-    <script>
-        let playerData = [];
+    function restartGame(){
+        window.location.reload();
+    }
 
-        function startGame() {
-            const username = document.getElementById('username').value;
-            if (username) {
-                document.getElementById('name-input').style.display = 'none';
-                document.getElementById('title').textContent = username + "'s Stress Reliever Game";
-                document.getElementById('title').style.display = 'block';
-                document.querySelector('.tools').style.display = 'block';
-                document.getElementById('zen-garden').style.display = 'block';
-                document.getElementById('emotion-count').style.display = 'block';
-                document.getElementById('selection-choice').style.display = 'block';
-                updatePlayerData(username, 0);
-            }
-        }
-
-        function restartGame() {
-            window.location.reload();
-        }
-
-        function updatePlayerData(username, emotionCount) {
-            const playerIndex = playerData.findIndex(player => player.username === username);
-            if (playerIndex !== -1) {
-                playerData[playerIndex].emotionCount = emotionCount;
-            } else {
-                playerData.push({ username, emotionCount });
-            }
-            renderPlayerInfo();
-        }
-
-        function renderPlayerInfo() {
-            const playerInfoElement = document.getElementById('player-info');
-            playerInfoElement.innerHTML = '';
-            playerData.forEach(player => {
-                const playerDiv = document.createElement('div');
-                playerDiv.textContent = player.username + ' - Emotions: ' + player.emotionCount;
-                playerInfoElement.appendChild(playerDiv);
-            });
-        }
-
-        let emotionCount = 0;
-
-        function addEmotion(event) {
-            // If clicked inside the zen garden
-            if (event && event.target.id === "zen-garden") {
-                const emotion = document.createElement('div');
-                emotion.className = 'emotion';
-                emotion.style.left = (event.clientX - event.target.offsetLeft) + 'px';
-                emotion.style.top = (event.clientY - event.target.offsetTop) + 'px';
-                document.getElementById('zen-garden').appendChild(emotion);
-                emotionCount++;
-                updateEmotionCount();
-                const username = document.getElementById('username').value;
-                updatePlayerData(username, emotionCount);
-            }
-        }
-
-        function clearSquare() {
-            // Remove all emotions
-            const zenGarden = document.getElementById('zen-garden');
-            while (zenGarden.firstChild) {
-                zenGarden.removeChild(zenGarden.firstChild);
-            }
-            emotionCount = 0;
+    function startGame() {
+        const username = document.getElementById('username').value;
+        if (username) {
+            document.getElementById('name-input').style.display = 'none';
+            document.getElementById('title').textContent = username + "'s Stress Reliever Game";
+            document.getElementById('title').style.display = 'block';
+            document.querySelector('.tools').style.display = 'block';
+            document.getElementById('zen-garden').style.display = 'block';
+            document.getElementById('emotion-count').style.display = 'block';
+            document.getElementById('selection-choice').style.display = 'block';
             updateEmotionCount();
-            const username = document.getElementById('username').value;
-            updatePlayerData(username, emotionCount);
         }
+    }
 
-        function changeEmotionColor() {
-            // Change the color of all emotions
-            const emotions = document.querySelectorAll('.emotion');
-            emotions.forEach(emotion => {
-                emotion.style.backgroundColor = getRandomColor();
-            });
+    function addEmotion(event) {
+        if (event && event.target.id === "zen-garden") {
+            const color = getRandomColor();
+            const emotion = document.createElement('div');
+            emotion.className = 'emotion';
+            emotion.style.backgroundColor = color;
+            emotion.style.left = (event.clientX - event.target.offsetLeft) + 'px';
+            emotion.style.top = (event.clientY - event.target.offsetTop) + 'px';
+            document.getElementById('zen-garden').appendChild(emotion);
+            increaseEmotionCount(color);
         }
+    }
 
-        function getRandomColor() {
-            // Generate a random color
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
+    function increaseEmotionCount(color) {
+        emotionCount[color]++;
+        updateEmotionCount();
+    }
 
-        function updateEmotionCount() {
-            const countElement = document.getElementById('emotion-count');
-            countElement.textContent = "Emotions: " + emotionCount;
+    function clearSquare() {
+        const zenGarden = document.getElementById('zen-garden');
+        while (zenGarden.firstChild) {
+            zenGarden.removeChild(zenGarden.firstChild);
         }
-    </script>
+        emotionCount = { red: 0, blue: 0, green: 0 };
+        updateEmotionCount();
+    }
+
+    function getRandomColor() {
+        const colors = ['red', 'blue', 'green'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function updateEmotionCount() {
+        const countElement = document.getElementById('emotion-count');
+        let totalEmotions = 0;
+        let countText = "Total Emotions: ";
+        for (const [color, count] of Object.entries(emotionCount)) {
+            totalEmotions += count;
+            countText += `${color.toUpperCase()} - ${count}, `;
+        }
+        countText = countText.slice(0, -2); // Remove the last comma
+        countText = "Total Emotions: " + totalEmotions + " | " + countText;
+        countElement.textContent = countText;
+    }
+
+    function changeEmotionLocation(){
+        const garden = document.getElementById('zen-garden');
+        const emotions = document.querySelectorAll('.emotion');
+        const gardenRect = garden.getBoundingClientRect();
+        emotions.forEach(emotion => {
+            const newX = Math.random() * (gardenRect.width - emotion.offsetWidth);
+            const newY = Math.random() * (gardenRect.height - emotion.offsetHeight);
+        emotion.style.left = newX + 'px';
+        emotion.style.top = newY + 'px';
+    });
+    }
+</script>
 </body>
 </html>
