@@ -1,7 +1,7 @@
 ---
-permalink: /arushicpt/
+permalink: /finalcpt/
 layout: base
-title: Swim
+title: Zen Emotion Garden
 search_exclude: true
 ---
 <!DOCTYPE html>
@@ -9,7 +9,7 @@ search_exclude: true
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zen Garden with Emotions</title>
+    <title>Zen Emotion Garden</title>
     <style>
         body {
             margin: 0;
@@ -22,7 +22,7 @@ search_exclude: true
             position: relative;
         }
 
-        .card {
+        .card, .modal {
             border: 2px solid #ccc;
             border-radius: 5px;
             padding: 50px;
@@ -51,8 +51,28 @@ search_exclude: true
             cursor: pointer;
         }
 
-        #name-input button:hover {
+        #name-input button:hover, .modal-button:hover {
             background-color: #45a049;
+        }
+
+        .modal {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
         }
 
         #zen-garden {
@@ -124,10 +144,17 @@ search_exclude: true
     </style>
 </head>
 <body>
+    <div class="overlay" onclick="toggleModal()"></div>
+    <div class="modal" id="game-info">
+        <h2>Game Information</h2>
+        <p>This game simulates bubble popping and is an online stress reliever. Feel free to have fun visualizing your different emotions in different colors and helping them go away!</p>
+        <button class="modal-button" onclick="toggleModal()">Close</button>
+    </div>
     <div class="card" id="name-input">
         <h2>Enter Your Name</h2>
         <input type="text" id="username" placeholder="Your name">
         <button onclick="startGame()">Start Game</button>
+        <button class="modal-button" onclick="toggleModal()">About This Game</button>
     </div>
     <div id="title">Stress Reliever Game</div>
     <div class="tools">
@@ -143,8 +170,15 @@ search_exclude: true
         <button onclick="restartGame()">Restart</button>
 </div>
 <script>
+    function toggleModal() {
+        const modal = document.getElementById('game-info');
+        const overlay = document.querySelector('.overlay');
+        const isVisible = modal.style.display === 'block';
+        modal.style.display = isVisible ? 'none' : 'block';
+        overlay.style.display = isVisible ? 'none' : 'block';
+    }
+    
     let emotionCount = { red: 0, blue: 0, green: 0 };
-
     function restartGame(){
         window.location.reload();
     }
@@ -173,6 +207,7 @@ search_exclude: true
             emotion.style.top = (event.clientY - event.target.offsetTop) + 'px';
             document.getElementById('zen-garden').appendChild(emotion);
             increaseEmotionCount(color);
+            playHappySound();
         }
     }
 
