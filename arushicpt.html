@@ -7,6 +7,108 @@ search_exclude: true
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        //document.addEventListener('DOMContentLoaded', function ()  {
+            
+       //});
+       function gameBegin() {
+                const username = document.getElementById('username').value;
+                if (username) {
+                    document.getElementById('name-input').style.display = 'none';
+                    document.getElementById('title').textContent = username + "'s Stress Reliever Game";
+                    document.getElementById('title').style.display = 'block';
+                    document.querySelector('.tools').style.display = 'block';
+                    document.getElementById('zen-garden').style.display = 'block';
+                    document.getElementById('emotion-count').style.display = 'block';
+                    document.getElementById('selection-choice').style.display = 'block';
+                    updateEmotionCount();
+                }
+            }
+        function startGame() {
+                var username = document.getElementById('username').value.trim();
+                var errorMessage = document.getElementById('error-message');
+        
+                if (username === '') {
+                    errorMessage.style = 'color: red; display: block;';
+                } else {
+                    errorMessage.style = 'color: red; display: none;';
+                    gameBegin();
+                }
+            }
+            //window.startGame = gameBegin; 
+            function toggleModal() {
+                const modal = document.getElementById('game-info');
+                const overlay = document.querySelector('.overlay');
+                const isVisible = modal.style.display === 'block';
+                modal.style.display = isVisible ? 'none' : 'block';
+                overlay.style.display = isVisible ? 'none' : 'block';
+            }
+            
+            let emotionCount = { red: 0, blue: 0, green: 0 };
+            function restartGame(){
+                window.location.reload();
+            }
+        
+           
+        
+            function addEmotion(event) {
+                if (event && event.target.id === "zen-garden") {
+                    const color = getRandomColor();
+                    const emotion = document.createElement('div');
+                    emotion.className = 'emotion';
+                    emotion.style.backgroundColor = color;
+                    emotion.style.left = (event.clientX - event.target.offsetLeft) + 'px';
+                    emotion.style.top = (event.clientY - event.target.offsetTop) + 'px';
+                    document.getElementById('zen-garden').appendChild(emotion);
+                    increaseEmotionCount(color);
+                    playHappySound();
+                }
+            }
+        
+            function increaseEmotionCount(color) {
+                emotionCount[color]++;
+                updateEmotionCount();
+            }
+        
+            function clearSquare() {
+                const zenGarden = document.getElementById('zen-garden');
+                while (zenGarden.firstChild) {
+                    zenGarden.removeChild(zenGarden.firstChild);
+                }
+                emotionCount = { red: 0, blue: 0, green: 0 };
+                updateEmotionCount();
+            }
+        
+            function getRandomColor() {
+                const colors = ['red', 'blue', 'green'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+        
+            function updateEmotionCount() {
+                const countElement = document.getElementById('emotion-count');
+                let totalEmotions = 0;
+                let countText = "Total Emotions: ";
+                for (const [color, count] of Object.entries(emotionCount)) {
+                    totalEmotions += count;
+                    countText += `${color.toUpperCase()} - ${count}, `;
+                }
+                countText = countText.slice(0, -2); // Remove the last comma
+                countText = "Total Emotions: " + totalEmotions + " | " + countText;
+                countElement.textContent = countText;
+            }
+        
+            function changeEmotionLocation(){
+                const garden = document.getElementById('zen-garden');
+                const emotions = document.querySelectorAll('.emotion');
+                const gardenRect = garden.getBoundingClientRect();
+                emotions.forEach(emotion => {
+                    const newX = Math.random() * (gardenRect.width - emotion.offsetWidth);
+                    const newY = Math.random() * (gardenRect.height - emotion.offsetHeight);
+                emotion.style.left = newX + 'px';
+                emotion.style.top = newY + 'px';
+            });
+            }
+        </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zen Emotion Garden</title>
@@ -154,7 +256,8 @@ search_exclude: true
     <div class="card" id="name-input">
         <h2>Enter Your Name</h2>
         <input type="text" id="username" placeholder="Your name">
-        <button onclick="startGame()">Start Game</button>
+        <span id="error-message" style="color: red; display: none;">Name Required</span>
+        <button class="modal-button" onclick="startGame()">Start Game</button>
         <button class="modal-button" onclick="toggleModal()">About This Game</button>
     </div>
     <div id="title">Stress Reliever Game</div>
@@ -170,91 +273,6 @@ search_exclude: true
     </div>  
         <button onclick="restartGame()">Restart</button>
 </div>
-<script>
-    function toggleModal() {
-        const modal = document.getElementById('game-info');
-        const overlay = document.querySelector('.overlay');
-        const isVisible = modal.style.display === 'block';
-        modal.style.display = isVisible ? 'none' : 'block';
-        overlay.style.display = isVisible ? 'none' : 'block';
-    }
-    
-    let emotionCount = { red: 0, blue: 0, green: 0 };
-    function restartGame(){
-        window.location.reload();
-    }
 
-    function startGame() {
-        const username = document.getElementById('username').value;
-        if (username) {
-            document.getElementById('name-input').style.display = 'none';
-            document.getElementById('title').textContent = username + "'s Stress Reliever Game";
-            document.getElementById('title').style.display = 'block';
-            document.querySelector('.tools').style.display = 'block';
-            document.getElementById('zen-garden').style.display = 'block';
-            document.getElementById('emotion-count').style.display = 'block';
-            document.getElementById('selection-choice').style.display = 'block';
-            updateEmotionCount();
-        }
-    }
-
-    function addEmotion(event) {
-        if (event && event.target.id === "zen-garden") {
-            const color = getRandomColor();
-            const emotion = document.createElement('div');
-            emotion.className = 'emotion';
-            emotion.style.backgroundColor = color;
-            emotion.style.left = (event.clientX - event.target.offsetLeft) + 'px';
-            emotion.style.top = (event.clientY - event.target.offsetTop) + 'px';
-            document.getElementById('zen-garden').appendChild(emotion);
-            increaseEmotionCount(color);
-            playHappySound();
-        }
-    }
-
-    function increaseEmotionCount(color) {
-        emotionCount[color]++;
-        updateEmotionCount();
-    }
-
-    function clearSquare() {
-        const zenGarden = document.getElementById('zen-garden');
-        while (zenGarden.firstChild) {
-            zenGarden.removeChild(zenGarden.firstChild);
-        }
-        emotionCount = { red: 0, blue: 0, green: 0 };
-        updateEmotionCount();
-    }
-
-    function getRandomColor() {
-        const colors = ['red', 'blue', 'green'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
-
-    function updateEmotionCount() {
-        const countElement = document.getElementById('emotion-count');
-        let totalEmotions = 0;
-        let countText = "Total Emotions: ";
-        for (const [color, count] of Object.entries(emotionCount)) {
-            totalEmotions += count;
-            countText += `${color.toUpperCase()} - ${count}, `;
-        }
-        countText = countText.slice(0, -2); // Remove the last comma
-        countText = "Total Emotions: " + totalEmotions + " | " + countText;
-        countElement.textContent = countText;
-    }
-
-    function changeEmotionLocation(){
-        const garden = document.getElementById('zen-garden');
-        const emotions = document.querySelectorAll('.emotion');
-        const gardenRect = garden.getBoundingClientRect();
-        emotions.forEach(emotion => {
-            const newX = Math.random() * (gardenRect.width - emotion.offsetWidth);
-            const newY = Math.random() * (gardenRect.height - emotion.offsetHeight);
-        emotion.style.left = newX + 'px';
-        emotion.style.top = newY + 'px';
-    });
-    }
-</script>
 </body>
 </html>
