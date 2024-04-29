@@ -24,10 +24,11 @@ search_exclude: true
                     updateEmotionCount();
                 }
             }
-        function startGame() {
-                var username = document.getElementById('username').value.trim();
-                var errorMessage = document.getElementById('error-message');
-        
+
+            function startGame() {
+            var username = document.getElementById('username').value.trim();
+            var errorMessage = document.getElementById('error-message');
+            for (var i = 0; i < 1; i++) {
                 if (username === '') {
                     errorMessage.style = 'color: red; display: block;';
                 } else {
@@ -35,6 +36,7 @@ search_exclude: true
                     gameBegin();
                 }
             }
+        }
             //window.startGame = gameBegin; 
             function toggleModal() {
                 const modal = document.getElementById('game-info');
