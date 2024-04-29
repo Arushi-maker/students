@@ -8,9 +8,6 @@ search_exclude: true
 <html lang="en">
 <head>
     <script>
-        //document.addEventListener('DOMContentLoaded', function ()  {
-            
-       //});
        function gameBegin() {
                 const username = document.getElementById('username').value;
                 if (username) {
@@ -37,22 +34,20 @@ search_exclude: true
                 }
             }
         }
-            //window.startGame = gameBegin; 
+        //ChatGPT was used in helping create this function
             function toggleModal() {
                 const modal = document.getElementById('game-info');
                 const overlay = document.querySelector('.overlay');
                 const isVisible = modal.style.display === 'block';
                 modal.style.display = isVisible ? 'none' : 'block';
                 overlay.style.display = isVisible ? 'none' : 'block';
-            }
+        }
             
             let emotionCount = { red: 0, blue: 0, green: 0 };
             function restartGame(){
                 window.location.reload();
-            }
-        
-           
-        
+        }
+
             function addEmotion(event) {
                 if (event && event.target.id === "zen-garden") {
                     const color = getRandomColor();
@@ -63,7 +58,6 @@ search_exclude: true
                     emotion.style.top = (event.clientY - event.target.offsetTop) + 'px';
                     document.getElementById('zen-garden').appendChild(emotion);
                     increaseEmotionCount(color);
-                    playHappySound();
                 }
             }
         
@@ -98,7 +92,7 @@ search_exclude: true
                 countText = "Total Emotions: " + totalEmotions + " | " + countText;
                 countElement.textContent = countText;
             }
-        
+        //ChatGPT was used to help create this function
             function changeEmotionLocation(){
                 const garden = document.getElementById('zen-garden');
                 const emotions = document.querySelectorAll('.emotion');
@@ -126,6 +120,7 @@ search_exclude: true
             position: relative;
         }
 
+        /* ChatGPT was used in helping the creation of modal  */
         .card, .modal {
             border: 2px solid #ccc;
             border-radius: 5px;
@@ -249,6 +244,7 @@ search_exclude: true
     </style>
 </head>
 <body>
+    <!--ChatGPT was used in helping with toggleModal in HTML-->
     <div class="overlay" onclick="toggleModal()"></div>
     <div class="modal" id="game-info">
         <h2>Game Information</h2>
@@ -260,6 +256,7 @@ search_exclude: true
         <input type="text" id="username" placeholder="Your name">
         <span id="error-message" style="color: red; display: none;">Name Required</span>
         <button class="modal-button" onclick="startGame()">Start Game</button>
+        <!--ChatGPT was used in helping the creation of modal-->
         <button class="modal-button" onclick="toggleModal()">About This Game</button>
     </div>
     <div id="title">Stress Reliever Game</div>
@@ -275,6 +272,5 @@ search_exclude: true
     </div>  
         <button onclick="restartGame()">Restart</button>
 </div>
-
 </body>
 </html>
