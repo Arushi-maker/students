@@ -22,7 +22,7 @@ search_exclude: true
                 }
             }
 
-            function startGame() {
+            function startGame(showWelcomeMessage) {
             var username = document.getElementById('username').value.trim();
             var errorMessage = document.getElementById('error-message');
             for (var i = 0; i < 1; i++) {
@@ -30,10 +30,15 @@ search_exclude: true
                     errorMessage.style = 'color: red; display: block;';
                 } else {
                     errorMessage.style = 'color: red; display: none;';
+                    if (showWelcomeMessage){
+                        alert("Welcome to the game, " + username + "!" )
+                    }
                     gameBegin();
                 }
             }
         }
+
+        startGame(false);
         //ChatGPT was used in helping create this function
             function toggleModal() {
                 const modal = document.getElementById('game-info');
